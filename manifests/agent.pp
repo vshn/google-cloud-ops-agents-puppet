@@ -24,11 +24,12 @@
 #    main_config   => 'puppet:///modules/example/ops_agent/config.yaml',
 #  }
 define google_cloud_ops::agent (
-  String $agent_type,
-  String $version = 'latest',
-  String $package_state = 'present',
-  String $main_config = '',
-  String $additional_config_dir = ''
+  String            $agent_type,
+  String            $version = 'latest',
+  String            $package_state = 'present',
+  String            $main_config = '',
+  String            $additional_config_dir = '',
+  Optional[String]  $proxy_server = undef,
 ) {
 
   # windows globals
@@ -125,6 +126,7 @@ define google_cloud_ops::agent (
       ensure => present,
       source => $script_source,
       mode   => '0700',
+      proxy  => $proxy_server,
     }
 
     if $package_state == 'present' {
